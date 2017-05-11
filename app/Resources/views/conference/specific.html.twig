@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="mdl-layout__tab-panel is-active" id="overview">
+        <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+                <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+                    <h4 class="mdl-cell mdl-cell--12-col">
+                        <center>Conference info</center>
+                    </h4>
+                    <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                        Overview
+                    </div>
+                    <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                        <h5>Description</h5>
+                        {{ conference.description }}
+                        <hr/>
+                        <h5>Venue</h5>
+                        {{ conference.venue }}
+                        <hr/>
+                        <h5>Hall(s)</h5>
+                        {{ conference.halls }}
+                        <hr/>
+                        <h5>Lecture(s)</h5>
+                        <br />
+                        {% for lecture in conference.lectures %}
+                            <b>{{ lecture.title }}</b>, from: {{ lecture.start }} to: {{ lecture.end }}, Status:
+                            {% if lecture.active != 1 %}
+                                Unconfirmed
+                            {% else %}
+                                Confirmed
+                            {% endif %}
+                            <br/>
+                            <form action="/lectures/visit" method="POST">
+                                <input type="hidden" name="conference_id" value="{{ conference.id }}">
+                                <input type="hidden" name="lecture_id" value="{{ lecture.id }}">
+                                <select name="visit_type">
+                                    <option value="0">Normal</option>
+                                    <option value="1">Must visit</option>
+                                    <option value="2">Not visit</option>
+                                </select>
+                                <input type="submit" value="Register">
+                            </form>
+                            <br/>
+                        {% endfor %}
+                        <hr/>
+                        <h5>Speaker(s)</h5>
+                        <br />
+                        {% for speaker in conference.speakers %}
+                            <b>{{ speaker.name }}</b>
+                            <br/>
+                            {% if speaker.confirmed == "0" %}
+                                Invited but not confirmet (yet)
+                            {% else %}
+                                Confirmed
+                            {% endif %}
+                            <br />
+                            <br />
+                        {% endfor %}
+                        <hr/>
+                        <h5>Owner</h5>
+                        {{ conference.owner }}
+                        <hr/>
+                        <h5>Created at</h5>
+                        {{ conference.created|date("m/d/Y H:i:s") }}
+                        <hr/>
+                        <h5>Appointed to</h5>
+                        {{ conference.appointed|date("m/d/Y") }}
+                    </div>
+                </div>
+                {% if app.user.username == conference.owner %}
+                    <div class="mdl-card__actions">
+                        <center>
+                            <a href="{{ path("conference_edit", {'id':conference.id}) }}">
+                                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent"
+                                        id="">
+                                    <i class="material-icons" role="presentation">create</i>
+                                    <span class="visuallyhidden">Add</span>
+                                </button>
+                            </a>
+                            <form method="post" action="{{ path("conference_delete_process", {'id':conference.id}) }}"
+                                  class="delete_form">
+                                <button type="submit"
+                                        class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent"
+                                        id="">
+                                    <i class="material-icons" role="presentation">clear</i>
+                                    <span class="visuallyhidden">Add</span>
+                                </button>
+                            </form>
+                        </center>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+{% endblock %}

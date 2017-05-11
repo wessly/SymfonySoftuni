@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="mdl-layout__tab-panel is-active" id="overview">
+        <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <div class="mdl-card mdl-cell mdl-cell--12-col">
+                <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+                    <h4 class="mdl-cell mdl-cell--12-col">
+                        <center>Overview</center>
+                    </h4>
+                    <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                        Username
+                    </div>
+                    <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                        {{ app.user.username }}
+                    </div>
+                    <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                        Email address
+                    </div>
+                    <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                        {{ app.user.email }}
+                    </div>
+                    <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                        Password
+                    </div>
+                    <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                        {{ app.user.password }}
+                    </div>
+                    <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                        Role
+                    </div>
+                    <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
+                        {{ app.user.role }}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <h4 class="mdl-cell mdl-cell--12-col conferences">
+                Conferences
+            </h4>
+            <br/>
+            <div class="mdl-card mdl-cell mdl-cell--4-col">
+                <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+                    <div class="section__text mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone">
+                        <h5 class="conferences_title">I've created</h5>
+                        {% for owner in app.user.isOwner %}
+                            <a href="{{ path("conference", {'id': owner.id}) }}">Conference {{ owner.id }}</a>
+                            <hr/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-card mdl-cell mdl-cell--4-col">
+                <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+                    <div class="section__text mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone">
+                        <h5 class="conferences_title">I'm speaker</h5>
+                        {% for speaker in speakers %}
+                            <a href="{{ path("conference", {'id': speaker.conference_id}) }}">Conference {{ speaker.conference_id }}</a>
+                            <hr/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-card mdl-cell mdl-cell--4-col">
+                <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
+                    <div class="section__text mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone">
+                        <h5 class="conferences_title">I'm visitor</h5>
+                        {% for visit in visits %}
+                            <a href="{{ path("conference", {'id': visit.conference_id}) }}">Conference {{ visit.conference_id }}</a>
+                                <br />
+                                {{ visit.title }}
+                            {% if visit.must_visit == "0" %}
+                                (Normal)
+                            {% elseif visit.must_visit == "1" %}
+                                (Must visit)
+                            {% elseif visit.must_visit == "2" %}
+                                (Not visit)
+                            {% endif %}
+                            <hr/>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
