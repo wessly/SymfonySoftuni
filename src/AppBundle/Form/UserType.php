@@ -22,23 +22,29 @@ class UserType extends AbstractType
     {
         $builder->add('username', TextType::class, [
             'required' =>  false,
+            'attr' => array('class' => 'mdl-textfield__input'),
         ])
             ->add('email', TextType::class,[
+                'attr' => array('class' => 'mdl-textfield__input'),
                 'required' =>  false,
             ])
             ->add('password_raw', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
+                    'attr' => array('class' => 'mdl-textfield__input'),
                     'required' =>  false,
                     'label'=> 'Password',
 
                 ],
                 'second_options' =>[
+                    'attr' => array('class' => 'mdl-textfield__input'),
                     'required' =>  false,
                     'label'=> 'Repeat Password'
                 ]
             ])
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class, [
+                'attr' => array('class' => 'mdl-button mdl-js-button mdl-button--raised mdl-button--accent margintop25'),
+            ]);
     }
 
     /**

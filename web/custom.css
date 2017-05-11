@@ -233,3 +233,7 @@ label {
 .mdl-mega-footer--heading, .mdl-mega-footer__heading {
     text-align: center !important;
 }
+
+.margintop25 {
+    margin-top: 25px !important;
+}
